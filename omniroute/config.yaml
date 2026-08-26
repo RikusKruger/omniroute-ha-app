@@ -23,7 +23,7 @@ options:
   ANTHROPIC_API_KEY: ""
   ENABLE_MCP: true
 schema:
-  MAX_MEMORY_MB: int(100, 4096)
+  MAX_MEMORY_MB: int(100,4096)
   DEFAULT_MODEL: str
   OPENAI_API_KEY: password?
   ANTHROPIC_API_KEY: password?
