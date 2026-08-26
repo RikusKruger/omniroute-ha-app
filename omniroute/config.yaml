@@ -1,0 +1,30 @@
+name: "OmniRoute"
+description: "Advanced LLM Proxy, Router, and MCP server for the Hermes Fleet."
+version: "1.0.0"
+slug: "omniroute"
+init: false
+arch:
+  - aarch64
+  - amd64
+ports:
+  20128/tcp: 20128
+ports_description:
+  20128/tcp: "OmniRoute API Port (OpenAI Compatible Endpoint)"
+ingress: true
+ingress_port: 0
+ingress_stream: true
+panel_icon: "mdi:robot-outline"
+panel_title: "OmniRoute"
+watchdog: "http://[HOST]:20128/health"
+options:
+  MAX_MEMORY_MB: 256
+  DEFAULT_MODEL: "auto/best-free"
+  OPENAI_API_KEY: ""
+  ANTHROPIC_API_KEY: ""
+  ENABLE_MCP: true
+schema:
+  MAX_MEMORY_MB: int(100, 4096)
+  DEFAULT_MODEL: str
+  OPENAI_API_KEY: password?
+  ANTHROPIC_API_KEY: password?
+  ENABLE_MCP: bool
