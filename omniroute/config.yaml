@@ -1,5 +1,5 @@
 name: "OmniRoute"
-description: "Advanced LLM Proxy, Router, and MCP server for the Hermes Fleet."
+description: "Advanced LLM Proxy, Router, and MCP server"
 version: "1.0.0"
 slug: "omniroute"
 init: false
