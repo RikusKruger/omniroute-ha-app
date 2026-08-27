@@ -1,11 +1,12 @@
-# 1. Use the EXACT official image. No Alpine, no compiling.
+# 1. Use the official image
 FROM diegosouzapw/omniroute:latest
 
-# 2. Switch to root user so Home Assistant can read the config files
+# 2. Switch to root user
 USER root
 
-# 3. Copy our tiny Node.js bridge script
-COPY run.js /run.js
+# 3. FIX THE AUTHOR'S BUG: Force-install the missing tsx engine
+RUN cd /app && npm install tsx
 
-# 4. Boot the script
+# 4. Copy and run our bridge script
+COPY run.js /run.js
 CMD ["node", "/run.js"]
