@@ -1,12 +1,9 @@
-# 1. Use the official image
-FROM diegosouzapw/omniroute:latest
+# Use the ultra-stable, official Node 20 image (Bypasses the Node 24 bug!)
+FROM node:20-alpine
 
-# 2. Switch to root user
-USER root
+# Install OmniRoute globally from NPM
+RUN npm install -g omniroute@latest
 
-# 3. FIX THE AUTHOR'S BUG: Force-install the missing tsx engine
-RUN cd /app && npm install tsx
-
-# 4. Copy and run our bridge script
+# Copy our Node boot script and run it
 COPY run.js /run.js
 CMD ["node", "/run.js"]
