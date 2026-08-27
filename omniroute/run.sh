@@ -9,10 +9,10 @@ OPENAI_KEY=$(bashio::config 'OPENAI_API_KEY')
 ANTHROPIC_KEY=$(bashio::config 'ANTHROPIC_API_KEY')
 MCP_ENABLED=$(bashio::config 'ENABLE_MCP')
 
-# 2. Extract the dynamic Ingress port HA assigned for the Web UI
-INGRESS_PORT=$(bashio::addon.ingress_port)
+# 2. Extract the dynamic Ingress port HA assigned for the Web UI (Warning fixed!)
+INGRESS_PORT=$(bashio::app.ingress_port)
 
-# 3. Build the .env file for OmniRoute dynamically
+# 3. Build the .env file for OmniRoute dynamically inside /app
 bashio::log.info "Injecting environment variables..."
 cat << EOF > /app/.env
 PORT=20128
@@ -25,11 +25,13 @@ EOF
 # 4. Set strict Node.js memory limits based on HA UI config
 export NODE_OPTIONS="--max-old-space-size=${MAX_MEMORY}"
 
-# 5. Launch execution
+# 5. Launch execution (Ensure we are inside the /app directory!)
+cd /app
+
 if bashio::var.true "${MCP_ENABLED}"; then
     bashio::log.info "Starting OmniRoute with MCP enabled..."
-    exec npx omniroute --mcp
+    exec npx --no-install omniroute --mcp
 else
     bashio::log.info "Starting OmniRoute..."
-    exec npx omniroute
+    exec npx --no-install omniroute
 fi
