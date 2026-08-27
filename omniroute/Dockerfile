@@ -1,19 +1,23 @@
 ARG BUILD_FROM=ghcr.io/hassio-addons/base:21.0.1
+
+# Stage 1: Grab the pre-built application from the author's official image
+FROM diegosouzapw/omniroute:latest AS upstream
+
+# Stage 2: Build the Home Assistant Add-on
 FROM $BUILD_FROM
 
-# 1. Install Node, Git, and essential compile tools for native modules
-RUN apk add --no-cache nodejs npm git python3 make g++
+# Install Node.js
+RUN apk add --no-cache nodejs npm
 
-# 2. Set working directory
 WORKDIR /app
 
-# 3. Clone the repo, install ALL dependencies, build the source, and link the CLI
-RUN git clone https://github.com/diegosouzapw/OmniRoute.git . && \
-    npm install && \
-    npm run build && \
-    npm link
+# Copy the completely pre-built app from the official image into our HA image
+COPY --from=upstream /app /app
 
-# 4. Copy the HA bootstrap script
+# The official image doesn't link the command globally, so we link it ourselves
+RUN cd /app && npm link
+
+# Copy the HA bootstrap script
 COPY run.sh /run.sh
 RUN chmod a+x /run.sh
 
