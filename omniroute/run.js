@@ -22,15 +22,18 @@ if (options.OPENAI_API_KEY) process.env.OPENAI_API_KEY = options.OPENAI_API_KEY;
 if (options.ANTHROPIC_API_KEY) process.env.ANTHROPIC_API_KEY = options.ANTHROPIC_API_KEY;
 if (options.MAX_MEMORY_MB) process.env.NODE_OPTIONS = `--max-old-space-size=${options.MAX_MEMORY_MB}`;
 
-// 3. Determine if MCP is toggled on
+// 3. Determine if MCP is toggled on (Use the production binary!)
 const mcpEnabled = options.ENABLE_MCP === true;
-const args = mcpEnabled ? ['start', '--', '--mcp'] : ['start'];
+const args = mcpEnabled ? ['bin/omniroute.mjs', '--mcp'] : ['bin/omniroute.mjs'];
 
 console.log("Injecting environment variables...");
-console.log(`Executing: npm ${args.join(' ')}\n`);
+console.log(`Executing: node ${args.join(' ')}\n`);
 
-// 4. Start the native OmniRoute application natively
-const child = spawn('npm', args, { 
+// Ensure we are in the right folder
+process.chdir('/app');
+
+// 4. Start the native OmniRoute application using Node
+const child = spawn('node', args, { 
     stdio: 'inherit', 
     shell: true
 });
