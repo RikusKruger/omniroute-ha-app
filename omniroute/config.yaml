@@ -11,7 +11,7 @@ ports:
 ports_description:
   20128/tcp: "OmniRoute API Port (OpenAI Compatible Endpoint)"
 ingress: true
-ingress_port: 0
+ingress_port: 20128
 ingress_stream: true
 panel_icon: "mdi:robot-outline"
 panel_title: "OmniRoute"
