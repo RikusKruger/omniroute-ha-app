@@ -2,7 +2,7 @@ const fs = require('fs');
 const { spawn } = require('child_process');
 
 console.log("==========================================");
-console.log("Booting Pure Node 20 OmniRoute Environment...");
+console.log("Booting Pure Node 22 OmniRoute Environment...");
 console.log("==========================================\n");
 
 // Read HA UI Settings
