@@ -1,24 +1,22 @@
 ARG BUILD_FROM=ghcr.io/hassio-addons/base:21.0.1
 
-# Stage 1: Grab the pre-built application from the author's official image
 FROM diegosouzapw/omniroute:latest AS upstream
 
-# Stage 2: Build the Home Assistant Add-on
 FROM $BUILD_FROM
 
-# Install Node.js
-RUN apk add --no-cache nodejs npm
+# 1. Install Node.js, the glibc compatibility layers, and dos2unix
+RUN apk add --no-cache nodejs npm gcompat libc6-compat dos2unix
 
 WORKDIR /app
 
-# Copy the completely pre-built app from the official image into our HA image
+# 2. Copy the pre-built Debian files
 COPY --from=upstream /app /app
 
-# Link the command globally, but IGNORE the broken Husky dev scripts!
+# 3. Link the package globally
 RUN cd /app && npm link --ignore-scripts
 
-# Copy the HA bootstrap script
+# 4. Copy the script, scrub invisible Windows line endings, and make executable
 COPY run.sh /run.sh
-RUN chmod a+x /run.sh
+RUN dos2unix /run.sh && chmod a+x /run.sh
 
 CMD [ "/run.sh" ]
