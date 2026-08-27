@@ -14,8 +14,8 @@ WORKDIR /app
 # Copy the completely pre-built app from the official image into our HA image
 COPY --from=upstream /app /app
 
-# The official image doesn't link the command globally, so we link it ourselves
-RUN cd /app && npm link
+# Link the command globally, but IGNORE the broken Husky dev scripts!
+RUN cd /app && npm link --ignore-scripts
 
 # Copy the HA bootstrap script
 COPY run.sh /run.sh
